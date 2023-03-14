@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Version>0.0.1-alpha1</Version>
+    <Company>infinispan.org</Company>
+    <Authors>rigazilla</Authors>
+    <Description>An Infinispan IEFCacheServiceProvider components for dotnet core</Description>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <SignAssembly>false</SignAssembly>
+    <PackageReleaseNotes />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.7.5" />
+    <PackageReference Include="Infinispan.Hotrod.Core" Version="0.0.3-beta2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="infinispan_icon_rgb_lightbluewhite_64px.png">
+      <Pack>True</Pack>
+      <PackagePath>icon.png</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>
