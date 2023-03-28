@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="infinispan_icon_rgb_lightbluewhite_64px.png">
+      <None Include="../infinispan_icon_rgb_lightbluewhite_64px.png">
       <Pack>True</Pack>
       <PackagePath>icon.png</PackagePath>
     </None>
