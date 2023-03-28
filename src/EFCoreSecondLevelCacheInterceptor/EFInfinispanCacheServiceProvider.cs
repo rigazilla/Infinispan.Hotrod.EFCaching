@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System;
 using EFCoreSecondLevelCacheInterceptor;
 using Infinispan.Hotrod.Core;
@@ -38,7 +39,7 @@ public class EFInfinispanCacheServiceProvider : IEFCacheServiceProvider
     }
 }
 
-class EFCacheKeyMarshaller : Marshaller<EFCacheKey>
+public class EFCacheKeyMarshaller : Marshaller<EFCacheKey>
 {
     public override byte[] marshall(EFCacheKey t)
     {
@@ -51,7 +52,7 @@ class EFCacheKeyMarshaller : Marshaller<EFCacheKey>
     }
 }
 
-class EFCachedDataMarshaller : Marshaller<EFCachedData>
+public class EFCachedDataMarshaller : Marshaller<EFCachedData>
 {
     public override byte[] marshall(EFCachedData t)
     {

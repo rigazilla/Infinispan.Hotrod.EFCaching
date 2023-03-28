@@ -17,15 +17,15 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
-        run: |-
+        run: |
           cd src
           dotnet restore
       - name: Build
-        run: |-
+        run: |
           cd src
           dotnet build --configuration Release --no-restore
       - name: Test
-        run: |-
+        run: |
           cd xunit-tests
-          dotnet test --no-restore --verbosity normal
+          dotnet test --verbosity normal
 
