@@ -1,7 +1,8 @@
-using System.Runtime.CompilerServices;
 using System;
 using EFCoreSecondLevelCacheInterceptor;
 using Infinispan.Hotrod.Core;
+using System.Runtime.Serialization.Json;
+using System.IO;
 
 /// <summary>
 ///     Using Infinispan as a cache service.
@@ -54,13 +55,17 @@ public class EFCacheKeyMarshaller : Marshaller<EFCacheKey>
 
 public class EFCachedDataMarshaller : Marshaller<EFCachedData>
 {
+    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(EFCachedData));
     public override byte[] marshall(EFCachedData t)
     {
-        throw new NotImplementedException();
+        var ms = new MemoryStream();
+        serializer.WriteObject(ms, t);
+        return ms.ToArray();
     }
-
     public override EFCachedData unmarshall(byte[] buff)
     {
-        throw new NotImplementedException();
+        var ms = new MemoryStream(buff);
+        var obj = (EFCachedData)serializer.ReadObject(ms);
+        return obj;
     }
 }
