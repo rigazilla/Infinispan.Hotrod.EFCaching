@@ -21,17 +21,17 @@ public class EFInfinispanCacheServiceProvider : IEFCacheServiceProvider
     }
     public void ClearAllCachedEntries()
     {
-        throw new NotImplementedException();
+        cache.Clear().Wait();
     }
 
     public EFCachedData GetValue(EFCacheKey cacheKey, EFCachePolicy cachePolicy)
     {
-        throw new NotImplementedException();
+        return cache.Get(cacheKey).Result;
     }
 
     public void InsertValue(EFCacheKey cacheKey, EFCachedData value, EFCachePolicy cachePolicy)
     {
-        throw new NotImplementedException();
+        cache.Put(cacheKey, value).Wait();
     }
 
     public void InvalidateCacheDependencies(EFCacheKey cacheKey)
