@@ -3,6 +3,7 @@ using EFCoreSecondLevelCacheInterceptor;
 using Infinispan.Hotrod.Core;
 using System.Runtime.Serialization.Json;
 using System.IO;
+using System.Text.Json;
 
 /// <summary>
 ///     Using Infinispan as a cache service.
@@ -42,14 +43,16 @@ public class EFInfinispanCacheServiceProvider : IEFCacheServiceProvider
 
 public class EFCacheKeyMarshaller : Marshaller<EFCacheKey>
 {
+    // DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(EFCacheKey));
     public override byte[] marshall(EFCacheKey t)
     {
-        throw new NotImplementedException();
+        return JsonSerializer.SerializeToUtf8Bytes(t);
     }
 
     public override EFCacheKey unmarshall(byte[] buff)
     {
-        throw new NotImplementedException();
+        var utf8Reader = new Utf8JsonReader(buff);
+        return JsonSerializer.Deserialize<EFCacheKey>(ref utf8Reader);
     }
 }
 
