@@ -4,6 +4,10 @@ using Infinispan.Hotrod.Core;
 using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
+using MessagePack;
+using MessagePack.Resolvers;
 
 /// <summary>
 ///     Using Infinispan as a cache service.
@@ -37,38 +41,55 @@ public class EFInfinispanCacheServiceProvider : IEFCacheServiceProvider
 
     public void InvalidateCacheDependencies(EFCacheKey cacheKey)
     {
-        throw new NotImplementedException();
+        // throw new NotImplementedException();
     }
 }
 
 public class EFCacheKeyMarshaller : Marshaller<EFCacheKey>
 {
-    // DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(EFCacheKey));
+    public static MessagePackSerializerOptions ops = MessagePackSerializerOptions.Standard.WithResolver(
+            MessagePack.Resolvers.CompositeResolver.Create(
+                                              new MessagePack.Formatters.IMessagePackFormatter[]
+                                              {
+                                                  DBNullFormatter.Instance, // This is necessary for the null values
+                                 },
+                                              new IFormatterResolver[]
+                                              {
+                                              NativeDateTimeResolver.Instance,
+                                              ContractlessStandardResolver.Instance,
+                                              StandardResolverAllowPrivate.Instance,
+                                 })); 
     public override byte[] marshall(EFCacheKey t)
     {
-        return JsonSerializer.SerializeToUtf8Bytes(t);
+        return MessagePackSerializer.Serialize(t, ops);
     }
 
     public override EFCacheKey unmarshall(byte[] buff)
     {
-        var utf8Reader = new Utf8JsonReader(buff);
-        return JsonSerializer.Deserialize<EFCacheKey>(ref utf8Reader);
+        return MessagePackSerializer.Deserialize<EFCacheKey>(buff, ops);
     }
 }
 
 public class EFCachedDataMarshaller : Marshaller<EFCachedData>
 {
-    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(EFCachedData));
+    public static MessagePackSerializerOptions ops = MessagePackSerializerOptions.Standard.WithResolver(
+            MessagePack.Resolvers.CompositeResolver.Create(
+                                              new MessagePack.Formatters.IMessagePackFormatter[]
+                                              {
+                                                  //DBNullFormatter.Instance, // This is necessary for the null values
+                                 },
+                                              new IFormatterResolver[]
+                                              {
+                                              NativeDateTimeResolver.Instance,
+                                              ContractlessStandardResolver.Instance,
+                                              StandardResolverAllowPrivate.Instance,
+                                 })); 
     public override byte[] marshall(EFCachedData t)
     {
-        var ms = new MemoryStream();
-        serializer.WriteObject(ms, t);
-        return ms.ToArray();
+        return MessagePackSerializer.Serialize(t, ops);
     }
     public override EFCachedData unmarshall(byte[] buff)
     {
-        var ms = new MemoryStream(buff);
-        var obj = (EFCachedData)serializer.ReadObject(ms);
-        return obj;
+        return MessagePackSerializer.Deserialize<EFCachedData>(buff, ops);
     }
 }

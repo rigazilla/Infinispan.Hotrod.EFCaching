@@ -46,8 +46,7 @@ namespace EFCoreBasicCaching
             services.AddLogging(cfg => cfg.AddConsole().AddDebug());
             services.AddEFSecondLevelCache(options => 
             {
-                options.UseMemoryCacheProvider(CacheExpirationMode.Absolute, TimeSpan.FromMinutes(5)).DisableLogging(false).UseCacheKeyPrefix("EF_")
-                .CacheAllQueries(CacheExpirationMode.Absolute, TimeSpan.FromMinutes(20));
+                options.UseCustomCacheProvider<EFInfinispanCacheServiceProvider>();
             });
 
             var basePath = Directory.GetCurrentDirectory();
