@@ -43,10 +43,10 @@ namespace EFCoreBasicCaching
             var services = new ServiceCollection();
             services.AddOptions();
 
-            services.AddLogging(cfg => cfg.AddConsole().AddDebug());
+            services.AddLogging(cfg => cfg.AddConsole().AddDebug().AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning));
             services.AddEFSecondLevelCache(options => 
             {
-                options.UseCustomCacheProvider<EFInfinispanCacheServiceProvider>();
+                options.UseCustomCacheProvider<EFInfinispanCacheServiceProvider>().UseCacheKeyPrefix("EF_").CacheAllQueries(CacheExpirationMode.Absolute, TimeSpan.FromSeconds(10));
             });
 
             var basePath = Directory.GetCurrentDirectory();

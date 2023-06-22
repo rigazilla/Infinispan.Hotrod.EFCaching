@@ -7,7 +7,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EFCoreSecondLevelCacheInterceptor\src\EFCoreSecondLevelCacheInterceptor\EFCoreSecondLevelCacheInterceptor.csproj" />
     <ProjectReference Include="..\..\src\Infinispan.Hotrod.EFCaching.csproj" />
   </ItemGroup>
 

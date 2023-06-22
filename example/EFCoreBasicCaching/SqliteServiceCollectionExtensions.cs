@@ -9,7 +9,6 @@ namespace EFCoreBasicCaching
     {
         public static IServiceCollection AddConfiguredSqliteDbContext(this IServiceCollection services, string connectionString)
         {
-            Console.WriteLine("AddCOnfiguredSqliteDbContext");
             services.AddDbContext<RestaurantContext>((serviceProvider, optionsBuilder) =>
                     optionsBuilder.UseSqlite(connectionString).AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>()));
             return services;

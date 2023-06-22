@@ -20,21 +20,11 @@ namespace EFCoreBasicCaching
             // See hint in ApplicationDbContext class of EFCoreSecondLevelCacheInterceptor Tests
             Database.AutoTransactionBehavior = AutoTransactionBehavior.Always;
         }
-
-        // The following configures EF to create a Sqlite database file in the
-        // special "local" folder for your platform.
-        // protected override void OnConfiguring(DbContextOptionsBuilder options)
-        //      { 
-        //         EFServiceProvider.GetRequiredService.Instance.AddDbContextPool<RestaurantContext>((serviceProvider, optionsBuilder) =>
-        //             optionsBuilder
-        //         options.UseSqlite($"Data Source={DbPath}").AddInterceptors(new SecondLevelCacheInterceptor());
-        //      }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             try
             {
-
-                                //Model builder for menu
+                //Model builder for menu
                 modelBuilder.Entity<Menu>(entity =>
                 {
                     entity.HasKey(e => e.MenuId);
@@ -51,15 +41,12 @@ namespace EFCoreBasicCaching
                         entity.HasKey(e => e.OrderId);
 
                         entity.Property(e => e.OrderId);
-                        // entity.Property(e => e.MenuId);
                         entity.Property(e => e.OrderDate);
                         entity.ToTable(nameof(Order));
                     });
-                // modelBuilder.Entity<Order>().HasMany(e=>e.MenuItems).WithOne().HasForeignKey(e=>e.MenuId).HasPrincipalKey(e=>e.OrderId);
             }
             catch (Exception )
             {
-
                 throw;
             }
         }
