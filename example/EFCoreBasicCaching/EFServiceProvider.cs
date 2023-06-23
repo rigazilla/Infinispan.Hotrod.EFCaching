@@ -50,7 +50,6 @@ namespace EFCoreBasicCaching
             });
 
             var basePath = Directory.GetCurrentDirectory();
-            Console.WriteLine($"Using `{basePath}` as the ContentRootPath");
             var configuration = new ConfigurationBuilder()
                                 .SetBasePath(basePath)
                                 .Build();
@@ -65,8 +64,7 @@ namespace EFCoreBasicCaching
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
-            var cf = "Data Source="+System.IO.Path.Join("/home/rigazilla/", "Restaurant.db");
-            Console.WriteLine("COnnection String: "+cf);
+            var cf = "Data Source="+System.IO.Path.Join(".", "Restaurant.db");
             return cf;
         }
 

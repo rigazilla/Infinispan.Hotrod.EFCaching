@@ -39,45 +39,44 @@ namespace EFCoreBasicCaching
                 });
                 context.Orders.Add(new Order { OrderDate = DateTime.Now, TotalPrice = 20, MenuItems = items });
                 context.SaveChanges();
-                Console.WriteLine("Data inserted successfully.");
 
-                Console.WriteLine("\n\nExpect MISS: first run for query");
+                Console.WriteLine("\n\nRunning a new query on Orders: expect MISS");
                 Console.WriteLine($"Order: {context.Orders.Cacheable().ToList().First().toJson()}");
                 System.Threading.Thread.Sleep(1000);
 
-                Console.WriteLine("\n\nExpect HIT: same as previous");
+                Console.WriteLine("\n\nRunning same query again: expect HIT");
                 Console.WriteLine($"Order: {context.Orders.Cacheable().ToList().First().toJson()}");
                 System.Threading.Thread.Sleep(1000);
 
                 Console.WriteLine("\n\nAdding an Order to invalidate query");
                 context.Orders.Add(new Order { OrderDate = DateTime.Now, TotalPrice = 20 });
                 context.SaveChanges();
-                Console.WriteLine("Expect MISS: query invalidated");
+                Console.WriteLine("Running same query, but it has been invalidated: epect MISS");
                 Console.WriteLine($"Order: {context.Orders.Cacheable().ToList().First().toJson()}");
                 System.Threading.Thread.Sleep(1000);
 
-                Console.WriteLine("\n\nExpect MISS: first run for query");
+                Console.WriteLine("\n\nRunning a new query on Menus: expect MISS");
                 Console.WriteLine($"Menu: {context.Menus.Cacheable().ToList().First().toJson()}");
 
                 Console.WriteLine("\n\nAdding an Order, previous query on Menu shoudn't invalidate");
                 context.Orders.Add(new Order { OrderDate = DateTime.Now, TotalPrice = 20 });
-                Console.WriteLine("\n\nExpect HIT: same as previous");
+                Console.WriteLine("\n\nRunning same query again: expect HIT");
                 Console.WriteLine($"Menu: {context.Menus.Cacheable().ToList().First().toJson()}");
 
-                Console.WriteLine("\n\nExpect MISS: first run for query");
+                Console.WriteLine("\n\nRunning a new query on Order for a Menu: expect MISS");
                 var menu = context.Orders.Where(o => o.OrderId==1).First().MenuItems.First();
                 Console.WriteLine($"Menu: {menu.toJson()}");
                 System.Threading.Thread.Sleep(1000);
 
 
-                Console.WriteLine("\n\nExpect HIT: same as previous");
+                Console.WriteLine("\n\nRunning same query again: expect HIT");
                 menu = context.Orders.Where(o => o.OrderId==1).First().MenuItems.First();
                 Console.WriteLine($"Menu: {menu.toJson()}");
 
 
                 Console.WriteLine("\n\nWaiting 15sec, cache expires in 10");
                 System.Threading.Thread.Sleep(15000);
-                Console.WriteLine("\n\nExpect MISS: query expired");
+                Console.WriteLine("\n\nRunning same query, but cache is expired: expect MISS");
                 menu = context.Orders.Where(o => o.OrderId==1).First().MenuItems.First();
                 Console.WriteLine($"Menu: {menu.toJson()}");
             });

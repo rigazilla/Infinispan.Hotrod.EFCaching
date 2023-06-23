@@ -35,7 +35,7 @@ public class EFInfinispanCacheServiceProvider : IEFCacheServiceProvider
     public EFCachedData GetValue(EFCacheKey cacheKey, EFCachePolicy cachePolicy)
     {
         var res = cache.Get(cacheKey).Result;
-        Console.Out.WriteLine("=========== "+ (res != null ? "HIT" : "MISS")+ " ==> Getting from cache key:" + cacheKey.ToString());
+        Console.Out.WriteLine("                           ==== "+ (res != null ? "HIT" : "MISS")+ " ==> Getting from cache key:" + cacheKey.ToString());
         return res;
     }
 
@@ -62,7 +62,7 @@ public class EFInfinispanCacheServiceProvider : IEFCacheServiceProvider
         var expTime = new ExpirationTime();
         expTime.Unit = TimeUnit.SECONDS;
         expTime.Value = cachePolicy.CacheTimeout.Seconds;
-        Console.Out.WriteLine("=========> Putting cache key:" + cacheKey.ToString());
+        Console.Out.WriteLine("                           =========> Putting cache key:" + cacheKey.ToString());
         cache.Put(cacheKey, value, expTime).Wait();
     }
 
@@ -73,8 +73,8 @@ public class EFInfinispanCacheServiceProvider : IEFCacheServiceProvider
             throw new ArgumentNullException(nameof(cacheKey));
         }
 
-        Console.Out.WriteLine("==========> Invalidating for cacheKey: " + cacheKey.ToString());
-        Console.Out.Write("==========> Invalidating root cache keys: ");
+        Console.Out.WriteLine("                           ====> Invalidating for cacheKey: " + cacheKey.ToString());
+        Console.Out.Write("                           ====> Invalidating root cache keys: ");
         foreach (var rootCacheKey in cacheKey.CacheDependencies)
         {
             Console.Out.Write(rootCacheKey.ToString()+", ");
