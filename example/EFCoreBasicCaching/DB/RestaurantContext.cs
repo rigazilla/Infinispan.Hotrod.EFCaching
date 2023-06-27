@@ -6,33 +6,25 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using EFCoreSecondLevelCacheInterceptor;
 
 namespace EFCoreBasicCaching
 {
-    internal class RestaurantContext : DbContext
+    public class RestaurantContext : DbContext
     {
         public DbSet<Menu> Menus { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
 
-        public string DbPath { get; set; }
-        public RestaurantContext()
+        public RestaurantContext(DbContextOptions<RestaurantContext> options) : base(options)
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DbPath = System.IO.Path.Join(path, "Restaurant.db");
+            // See hint in ApplicationDbContext class of EFCoreSecondLevelCacheInterceptor Tests
+            Database.AutoTransactionBehavior = AutoTransactionBehavior.Always;
         }
-
-        // The following configures EF to create a Sqlite database file in the
-        // special "local" folder for your platform.
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite($"Data Source={DbPath}");
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             try
             {
-
-                                //Model builder for menu
+                //Model builder for menu
                 modelBuilder.Entity<Menu>(entity =>
                 {
                     entity.HasKey(e => e.MenuId);
@@ -49,19 +41,14 @@ namespace EFCoreBasicCaching
                         entity.HasKey(e => e.OrderId);
 
                         entity.Property(e => e.OrderId);
-                        // entity.Property(e => e.MenuId);
                         entity.Property(e => e.OrderDate);
                         entity.ToTable(nameof(Order));
                     });
-                // modelBuilder.Entity<Order>().HasMany(e=>e.MenuItems).WithOne().HasForeignKey(e=>e.MenuId).HasPrincipalKey(e=>e.OrderId);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
-
                 throw;
             }
         }
-
-
     }
 }
