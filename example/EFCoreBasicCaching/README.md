@@ -2,7 +2,7 @@
 
 ## Requirements
 - dotnet 7.0
-- qslite
+- sqlite
 
 ## Running the demo
 Should be as easy as:

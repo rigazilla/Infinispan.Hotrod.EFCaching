@@ -12,11 +12,9 @@
     <SignAssembly>false</SignAssembly>
     <PackageReleaseNotes />
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\EFCoreSecondLevelCacheInterceptor\src\EFCoreSecondLevelCacheInterceptor\EFCoreSecondLevelCacheInterceptor.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.7.5" />
     <PackageReference Include="Infinispan.Hotrod.Core" Version="0.0.3-beta2" />
   </ItemGroup>
 

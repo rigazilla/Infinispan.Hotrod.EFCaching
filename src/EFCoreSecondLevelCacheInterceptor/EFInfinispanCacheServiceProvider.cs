@@ -58,7 +58,6 @@ public class EFInfinispanCacheServiceProvider : IEFCacheServiceProvider
             }
         }
 
-        var lifeSpan = cachePolicy.CacheTimeout;
         var expTime = new ExpirationTime();
         expTime.Unit = TimeUnit.SECONDS;
         expTime.Value = cachePolicy.CacheTimeout.Seconds;
